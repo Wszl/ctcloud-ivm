@@ -366,7 +366,7 @@ public class ServiceRequests {
                     return jsonObject.getJSONObject(RESPONSE_KEY_RESULT_RES).getInnerMap();
                 } else {
                     log.info(jsonObject.get(RESPONSE_KEY_RESULT_MSG));
-                    return new HashMap<>();
+                    throw new RuntimeException(jsonObject.getString(RESPONSE_KEY_RESULT_MSG));
                 }
             } catch (IOException e) {
                 log.info(e.getLocalizedMessage());
