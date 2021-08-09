@@ -258,34 +258,24 @@ public class ServiceRequests {
     }
 
     /**
-     * 厨房违规检测 厨房违规检测告警推送 47205
-     * @return result { "code":"47205", "taskId":"60c9e354e4b0e5b791d3ccee", "appKey":"xxxxx", "capturedTime":"2021-06-2116:12:06", "data":[ { "type":"mouse", "score":0.97, "msg":"老鼠", "coordinatesInfo":{ "leftTopX":10, "leftTopY":10, "rightBtmX":20, "rightBtmY":20 },"url":"http://ip:port/picture/xxxx.jpg" } ],"timestamp":1624261393574 }
-     * */
-    public Map<String, Object> getKitchenSceneWarningPush() {
-        Map<String, Object> param = new TreeMap<>();
-        param.put("code", "47205");
-        return baseRequest(param);
-    }
-
-    /**
-     * 通用接口 查看订阅 40701
+     * 通用接口 查看订阅 30701
      * @return {"returnUrl":"http://chenshw.tunnel.qydev.com/ivmsubscription/sub/index", "codes":"42909", "createTime":"2020-06-05T03:25:22.000+0000", "updateTime":"2020-06-05T08:31:45.000+0000" },
      * */
     public Map<String, Object> querySubscribe() {
         Map<String, Object> param = new TreeMap<>();
-        param.put("code", "40701");
+        param.put("code", "30701");
         return baseRequest(param);
     }
 
     /**
-     * 通用接口 添加订阅 40702
+     * 通用接口 添加订阅 30702
      * @param returnUrl 回调地址
      * @param codes 推送内容编号（以逗号隔开）
      * @return { }
      * */
     public Map<String, Object> createSubscribe(String returnUrl, String codes) {
         Map<String, Object> param = new TreeMap<>();
-        param.put("code", "40702");
+        param.put("code", "30702");
         Map<String, String> req = new TreeMap<>();
         req.put("returnUrl", returnUrl);
         req.put("codes", codes);
@@ -294,14 +284,14 @@ public class ServiceRequests {
     }
 
     /**
-     * 通用接口 修改订阅 40703
+     * 通用接口 修改订阅 30703
      * @param returnUrl 回调地址
      * @param codes 推送内容编号（以逗号隔开）
      * @return { }
      * */
     public Map<String, Object> updateSubscribe(String returnUrl, String codes) {
         Map<String, Object> param = new TreeMap<>();
-        param.put("code", "40703");
+        param.put("code", "30703");
         Map<String, String> req = new TreeMap<>();
         req.put("returnUrl", returnUrl);
         req.put("codes", codes);
@@ -310,28 +300,19 @@ public class ServiceRequests {
     }
 
     /**
-     * 通用接口 删除订阅 40704
+     * 通用接口 删除订阅 30704
      * @param subId subId
      * @return { }
      * */
     public Map<String, Object> deleteSubscribe(String subId) {
         Map<String, Object> param = new TreeMap<>();
-        param.put("code", "40704");
+        param.put("code", "30704");
         Map<String, String> req = new TreeMap<>();
         req.put("subId", subId);
         param.put("req", req);
         return baseRequest(param);
     }
 
-    /**
-     * 通用接口 视频流状态推送 45312
-     * @return { }
-     * */
-    public Map<String, Object> getPushInfo() {
-        Map<String, Object> param = new TreeMap<>();
-        param.put("code", "45312");
-        return baseRequest(param);
-    }
 
     private Map<String, Object> baseRequest(Map<String, Object> param) {
         HttpPost post = new HttpPost(config.getApiurl());

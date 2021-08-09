@@ -95,12 +95,6 @@ public class ServiceRequestsTest {
     }
 
     @Test
-    public void getKitchenSceneWarningPush() {
-        Map<String, Object> videoTask = requests.getKitchenSceneWarningPush();
-        System.out.println(videoTask);
-    }
-
-    @Test
     public void querySubscribe() {
         Map<String, Object> videoTask = requests.querySubscribe();
         System.out.println(videoTask);
@@ -124,9 +118,4 @@ public class ServiceRequestsTest {
         System.out.println(videoTask);
     }
 
-    @Test
-    public void getPushInfo() {
-        Map<String, Object> videoTask = requests.getPushInfo();
-        System.out.println(videoTask);
-    }
 }
