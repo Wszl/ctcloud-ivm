@@ -264,6 +264,8 @@ public class ServiceRequests {
     public Map<String, Object> querySubscribe() {
         Map<String, Object> param = new TreeMap<>();
         param.put("code", "30701");
+        Map<String, String> req = new TreeMap<>();
+        param.put("req", req);
         return baseRequest(param);
     }
 
