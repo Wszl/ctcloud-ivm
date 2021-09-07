@@ -10,7 +10,7 @@ import java.util.List;
  * @date 2021年7月31日
  */
 @Data
-public class KitchenUpdateTaskAnalysisRule {
+public class CreateTaskAnalysisRule {
     /** 检测类型 "mouse"老鼠,"phone"打电 */
     private List<String> types;
     /** 检测区域 */

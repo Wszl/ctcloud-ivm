@@ -12,15 +12,11 @@ import java.util.Map;
  */
 public class ServiceRequestsTest {
 
-    private IVMConfig ivmConfig;
     private ServiceRequests requests;
-    private String videoTaskId = "60121fbd3a5c8463252f8810";
-    private String kitchenTaskId = "60c9ca42e4b0e5b721396a92";
-    private String subId = "x";
 
     @Before
     public void setUp() throws Exception {
-        ivmConfig = new IVMConfig(
+        IVMConfig ivmConfig = new IVMConfig(
                 System.getenv("apiurl"),
                 System.getenv("secret"),
                 System.getenv("appkey")
@@ -29,69 +25,31 @@ public class ServiceRequestsTest {
     }
 
     @Test
-    public void createVideoTask() {
-        Map<String, Object> videoTask = requests.createVideoTask(1, "test", "http://localhost/", "x", 0);
-        System.out.println(videoTask);
+    public void testCreateTask() {
+        String deviceNum = System.getenv("deviceNum");
+        final Map<String, Object> result = requests.createTask(deviceNum, null, 0, null, null, null);
+        System.out.println(result);
     }
 
     @Test
-    public void updateVideoTask() {
-        Map<String, Object> videoTask = requests.updateVideoTask(1, "test", videoTaskId, "http://localhost/", "x");
-        System.out.println(videoTask);
+    public void testUpdateTask() {
+        String deviceNum = System.getenv("deviceNum");
+        String taskId = System.getenv("taskId");
+        final Map<String, Object> result = requests.updateTask(deviceNum, null, "test", null, null, taskId);
+        System.out.println(result);
     }
 
     @Test
-    public void startVideoTask() {
-        Map<String, Object> videoTask = requests.startVideoTask(videoTaskId);
-        System.out.println(videoTask);
+    public void testQueryTask() {
+        final Map<String, Object> result = requests.queryTask(null, 10, 1);
+        System.out.println(result);
     }
 
     @Test
-    public void stopVideoTask() {
-        Map<String, Object> videoTask = requests.stopVideoTask(videoTaskId);
-        System.out.println(videoTask);
-    }
-
-    @Test
-    public void queryVideoTask() {
-        Map<String, Object> videoTask = requests.queryVideoTask(null, 10, 1);
-        System.out.println(videoTask);
-    }
-
-    @Test
-    public void deleteVideoTask() {
-        Map<String, Object> videoTask = requests.deleteVideoTask(videoTaskId);
-        System.out.println(videoTask);
-    }
-
-    @Test
-    public void queryVideoScene() {
-        Map<String, Object> videoTask = requests.queryVideoScene(videoTaskId);
-        System.out.println(videoTask);
-    }
-
-    @Test
-    public void createKitchenScene() {
-        Map<String, Object> videoTask = requests.createKitchenScene(null, null, null, kitchenTaskId);
-        System.out.println(videoTask);
-    }
-
-    @Test
-    public void updateKitchenScene() {
-        Map<String, Object> videoTask = requests.updateKitchenScene(null, null, null, kitchenTaskId);
-        System.out.println(videoTask);
-    }
-
-    @Test
-    public void queryKitchenScene() {
-        Map<String, Object> videoTask = requests.queryKitchenScene( kitchenTaskId, 10, 0);
-        System.out.println(videoTask);
-    }
-
-    @Test
-    public void deleteKitchenScene() {
-        Map<String, Object> videoTask = requests.deleteKitchenScene( kitchenTaskId);
-        System.out.println(videoTask);
+    public void testDeleteTask() {
+        String taskId = System.getenv("taskId");
+        final Map<String, Object> result = requests.deleteTask(taskId);
+        System.out.println(result);
     }
 
     @Test
@@ -102,20 +60,53 @@ public class ServiceRequestsTest {
 
     @Test
     public void createSubscribe() {
-        Map<String, Object> videoTask = requests.createSubscribe("http://localhost", null);
+        String returnUrl = System.getenv("returnUrl");
+        Map<String, Object> videoTask = requests.createSubscribe(returnUrl,
+                "47205,45312");
         System.out.println(videoTask);
     }
 
     @Test
     public void updateSubscribe() {
-        Map<String, Object> videoTask = requests.updateSubscribe("http://localhost", null);
+        String returnUrl = System.getenv("returnUrl");
+        String subId = System.getenv("subId");
+        Map<String, Object> videoTask = requests.updateSubscribe(subId, returnUrl, "47205, 45312");
         System.out.println(videoTask);
     }
 
     @Test
     public void deleteSubscribe() {
+        String subId = System.getenv("subId");
         Map<String, Object> videoTask = requests.deleteSubscribe(subId);
         System.out.println(videoTask);
     }
 
+    @Test
+    public void testCreateControl() {
+        String taskIds = System.getenv("taskIds");
+        String repoIds = System.getenv("repoIds");
+        final Map<String, Object> result = requests.createControl(taskIds, 50, repoIds);
+        System.out.println(result);
+    }
+
+    @Test
+    public void testQueryControl() {
+        String controlId = System.getenv("controlId");
+        final Map<String, Object> result = requests.queryControl(controlId, 10, 1);
+        System.out.println(result);
+    }
+
+    @Test
+    public void testUpdateControl() {
+        String controlId = System.getenv("controlId");
+        final Map<String, Object> result = requests.updateControl(controlId, null, 60, null);
+        System.out.println(result);
+    }
+
+    @Test
+    public void testDeleteControl() {
+        String controlId = System.getenv("controlId");
+        final Map<String, Object> result = requests.deleteControl(controlId);
+        System.out.println(result);
+    }
 }

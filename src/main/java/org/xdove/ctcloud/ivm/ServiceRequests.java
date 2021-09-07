@@ -12,8 +12,8 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.xdove.ctcloud.ivm.entity.KitchenCreateTaskAnalysisRule;
-import org.xdove.ctcloud.ivm.entity.KitchenUpdateTaskAnalysisRule;
+import org.xdove.ctcloud.ivm.entity.CreateTaskAnalysisRule;
+import org.xdove.ctcloud.ivm.entity.UpdateTaskAnalysisRule;
 import org.xdove.utils.WebSignatureUtils;
 
 import java.io.IOException;
@@ -72,154 +72,48 @@ public class ServiceRequests {
     }
 
     /**
-     * 视频抽帧 创建任务，任务创建完默认处于停止状态 45705
-     * @param extractionFrequency 抽帧频率，秒/帧
-     * @param name 任务名称
-     * @param url 视频流地址或视频文件地址
-     * @param deviceNum 设备编码（第三方平台），与 url 二 选一
-     * @param type 类型,0:视频流地址,1:视频文件地址
-     * @return result {"taskId":"60121fbd3a5c8463252f8810" }
-     */
-    public Map<String, Object> createVideoTask(int extractionFrequency, String name, String url, String deviceNum, int type) {
-        Map<String, Object> param = new TreeMap<>();
-        param.put("code", "45705");
-        Map<String, Object> req = new TreeMap<>();
-        req.put("extractionFrequency", extractionFrequency);
-        req.put("name", name);
-        req.put("url", url);
-        req.put("deviceNum", deviceNum);
-        req.put("type", type);
-        param.put("req", req);
-        return baseRequest(param);
-    }
-
-    /**
-     * 视频抽帧 根据任务 id 来修改任务 45706
-     * @param extractionFrequency 抽帧频率，秒/帧
-     * @param name 任务名称
-     * @param taskId 任务 id
-     * @param url 视频流地址或视频文件地址
-     * @param deviceNum 设备编码（第三方平台），与 url 二 选一
-     * @return result {"taskId":"60121fbd3a5c8463252f8810" }
-     */
-    public Map<String, Object> updateVideoTask(int extractionFrequency, String name, String taskId, String url, String deviceNum) {
-        Map<String, Object> param = new TreeMap<>();
-        param.put("code", "45706");
-        Map<String, Object> req = new TreeMap<>();
-        req.put("extractionFrequency", extractionFrequency);
-        req.put("name", name);
-        req.put("url", url);
-        req.put("deviceNum", deviceNum);
-        req.put("taskId", taskId);
-        param.put("req", req);
-        return baseRequest(param);
-    }
-
-    /**
-     * 视频抽帧 启动已创建的任务或处于停止状态的任务 45707
-     * @param taskId 任务 id
-     * @return result { }
-     */
-    public Map<String, Object> startVideoTask(String taskId) {
-        Map<String, Object> param = new TreeMap<>();
-        param.put("code", "45707");
-        Map<String, String> req = new TreeMap<>();
-        req.put("taskId", taskId);
-        param.put("req", req);
-        return baseRequest(param);
-    }
-
-    /**
-     * 视频抽帧 停止任务 45708
-     * @param taskId 任务 id
-     * @return result { }
-     */
-    public Map<String, Object> stopVideoTask(String taskId) {
-        Map<String, Object> param = new TreeMap<>();
-        param.put("code", "45708");
-        Map<String, String> req = new TreeMap<>();
-        req.put("taskId", taskId);
-        param.put("req", req);
-        return baseRequest(param);
-    }
-
-    /**
-     * 视频抽帧 分页查询任务信息 45709
-     * @param taskId 任务 id
-     * @return result {"totalRow":1, "data":[ { "taskId":"60121fbd3a5c8463252f8810", "taskName":"任务测试", "taskStatus":1, "sourceId":"60121fae3a5c8463252f880d", "extractionFrequency":10, "createTime":"2021-01-2810:21:50" } ],"totalPage":1, "pageSize":5, "pageNum":1 }
-     */
-    public Map<String, Object> queryVideoTask(String taskId, int pageSize, int pageNum) {
-        Map<String, Object> param = new TreeMap<>();
-        param.put("code", "45709");
-        Map<String, Object> req = new TreeMap<>();
-        req.put("taskId", taskId);
-        req.put("pageSize", pageSize);
-        req.put("pageNum", pageNum);
-        param.put("req", req);
-        return baseRequest(param);
-    }
-
-    /**
-     * 视频抽帧 根据任务 id 来删除任务 45710
-     * @param taskId 任务 id
-     * @return result { }
-     */
-    public Map<String, Object> deleteVideoTask(String taskId) {
-        Map<String, Object> param = new TreeMap<>();
-        param.put("code", "45710");
-        Map<String, String> req = new TreeMap<>();
-        req.put("taskId", taskId);
-        param.put("req", req);
-        return baseRequest(param);
-    }
-
-    /**
-     * 视频抽帧 查询场景图 45713
-     * @param taskId 任务 id
-     * @return result {"sceneBase64":"图片 Base64" },
-     */
-    public Map<String, Object> queryVideoScene(String taskId) {
-        Map<String, Object> param = new TreeMap<>();
-        param.put("code", "45713");
-        Map<String, String> req = new TreeMap<>();
-        req.put("taskId", taskId);
-        param.put("req", req);
-        return baseRequest(param);
-    }
-
-    /**
-     * 厨房违规检测 创建任务 47201
-     * @param rule 检测规则，不传则默认全屏检测所有 类型（非必填）types 不传则默认检测所有类型，检测类型 有："mouse"老鼠,"phone"打电 话,"nohat"未戴厨师帽,"nomask"无  area   检测区域，不传默认检测全屏
-     * @param sceneBase64 基准场景图，用于校验违规置物、视 频不正的基准图片（非必填）
+     * 创建明厨亮灶任务 47211
+     * @param deviceNum 设备编码（非必填，与 url 二选一）
+     * @param url 视频流地址或视频文件地址（非必填，与 deviceNum 二选一）
+     * @param type 类型,0:视频流地址,1:视频文件地址（必填）
+     * @param analysisRule 检测规则，不传则默认全屏检测所有类型（非必填）
+     * @param sceneBase64 基准场景图，用于校验违规置物、视频不正的基准图片（非必填）
      * @param name 任务名称（非必填）
-     * @param videoTaskId 视频抽帧任务 ID（必填）
      * @return result {"taskId":"60d04273e4b0e5b78bd1b502" }
      */
-    public Map<String, Object> createKitchenScene(KitchenCreateTaskAnalysisRule rule, String sceneBase64, String name, String videoTaskId) {
+    public Map<String, Object> createTask(String deviceNum, String url, int type, CreateTaskAnalysisRule analysisRule,
+                                          String sceneBase64, String name) {
         Map<String, Object> param = new TreeMap<>();
-        param.put("code", "47201");
-        Map<String, String> req = new TreeMap<>();
-        req.put("rule", JSON.toJSONString(rule));
+        param.put("code", "47211");
+        Map<String, Object> req = new TreeMap<>();
+        req.put("deviceNum", deviceNum);
+        req.put("url", url);
+        req.put("type", type);
+        req.put("analysisRule", analysisRule);
         req.put("sceneBase64", sceneBase64);
         req.put("name", name);
-        req.put("videoTaskId", videoTaskId);
         param.put("req", req);
         return baseRequest(param);
     }
 
     /**
-     * 厨房违规检测 修改厨房违规检测任务 47202
-     * @param rule 检测规则，不传则默认全屏检测所有 类型（非必填）types 不传则默认检测所有类型，检测类型 有："mouse"老鼠,"phone"打电 话,"nohat"未戴厨师帽,"nomask"无  area   检测区域，不传默认检测全屏
-     * @param sceneBase64 基准场景图，用于校验违规置物、视 频不正的基准图片（非必填）
+     * 创建明厨亮灶任务 47212
+     * @param deviceNum 设备编码（非必填，与 url 二选一）
+     * @param url 视频流地址或视频文件地址（非必填，与 deviceNum 二选一）
      * @param name 任务名称（非必填）
+     * @param analysisRule 检测规则，不传则默认全屏检测所有类型（非必填）
+     * @param sceneBase64 基准场景图，用于校验违规置物、视频不正的基准图片（非必填）
      * @param taskId 检测任务 id（必填）
      * @return result { }
      */
-    public Map<String, Object> updateKitchenScene(KitchenUpdateTaskAnalysisRule rule, String sceneBase64, String name, String taskId) {
+    public Map<String, Object> updateTask(String deviceNum, String url, String name, CreateTaskAnalysisRule analysisRule,
+                                               String sceneBase64, String taskId) {
         Map<String, Object> param = new TreeMap<>();
-        param.put("code", "47202");
-        Map<String, String> req = new TreeMap<>();
-        req.put("rule", JSON.toJSONString(rule));
+        param.put("code", "47212");
+        Map<String, Object> req = new TreeMap<>();
+        req.put("deviceNum", deviceNum);
+        req.put("url", url);
+        req.put("analysisRule", analysisRule);
         req.put("sceneBase64", sceneBase64);
         req.put("name", name);
         req.put("taskId", taskId);
@@ -228,13 +122,15 @@ public class ServiceRequests {
     }
 
     /**
-     * 厨房违规检测 查询厨房违规检测任务 47203
+     * 查询明厨亮灶任务 47213
      * @param taskId 检测任务 ID（非必填）
-     * @return result {"totalRow":1, "data":[ { "deviceNum":"10020210616175411008", "analysisRule":[ { "area":[ [ 100, 21 ],[ 100, 67 ],[ 56, 89 ] ],"types":"videoangle" } ],"videoTaskId":"60c9ca42e4b0e5b721396a92", "taskName":"测试", "taskId":"60d04273e4b0e5b78bd1b502", "url":"rtsp://10.134.7.2:6002/ffcs/l_30237282", "createTime":"2021-01-2810:21:50" } ],"totalPage":1, "pageSize":10, "pageNum":1 }
+     * @param pageSize 每页条数，默认为 10（非必填）
+     * @param pageNum 页码，默认为 1（非必填）
+     * @return result {"totalRow":1, "data":[ { "taskId":"60121fbd3a5c8463252f8810", "taskName":"任务测试", "taskStatus":1, "sourceId":"60121fae3a5c8463252f880d", "extractionFrequency":10, "createTime":"2021-01-2810:21:50" } ],"totalPage":1, "pageSize":5, "pageNum":1 }
      */
-    public Map<String, Object> queryKitchenScene(String taskId, int pageSize, int pageNum) {
+    public Map<String, Object> queryTask(String taskId, int pageSize, int pageNum) {
         Map<String, Object> param = new TreeMap<>();
-        param.put("code", "47203");
+        param.put("code", "47213");
         Map<String, Object> req = new TreeMap<>();
         req.put("taskId", taskId);
         req.put("pageSize", pageSize);
@@ -244,13 +140,13 @@ public class ServiceRequests {
     }
 
     /**
-     * 厨房违规检测 删除厨房违规检测任务 47204
+     * 删除明厨亮灶任务 47214
      * @param taskId 检测任务 ID
      * @return result { }
-     * */
-    public Map<String, Object> deleteKitchenScene(String taskId) {
+     */
+    public Map<String, Object> deleteTask(String taskId) {
         Map<String, Object> param = new TreeMap<>();
-        param.put("code", "47204");
+        param.put("code", "47214");
         Map<String, String> req = new TreeMap<>();
         req.put("taskId", taskId);
         param.put("req", req);
@@ -271,7 +167,7 @@ public class ServiceRequests {
 
     /**
      * 通用接口 添加订阅 30702
-     * @param returnUrl 回调地址
+     * @param returnUrl 回调地址，有多个的话用逗号隔开，不允许出现中文字符
      * @param codes 推送内容编号（以逗号隔开）
      * @return { }
      * */
@@ -287,14 +183,16 @@ public class ServiceRequests {
 
     /**
      * 通用接口 修改订阅 30703
-     * @param returnUrl 回调地址
+     * @param subId  如果有多个订阅地址可指定订阅 id修改，如果没有则不用传入订阅 ID
+     * @param returnUrl 回调地址，有多个的话用逗号隔开，不允许出现中文字符
      * @param codes 推送内容编号（以逗号隔开）
      * @return { }
      * */
-    public Map<String, Object> updateSubscribe(String returnUrl, String codes) {
+    public Map<String, Object> updateSubscribe(String subId, String returnUrl, String codes) {
         Map<String, Object> param = new TreeMap<>();
         param.put("code", "30703");
         Map<String, String> req = new TreeMap<>();
+        req.put("subId", subId);
         req.put("returnUrl", returnUrl);
         req.put("codes", codes);
         param.put("req", req);
@@ -303,7 +201,7 @@ public class ServiceRequests {
 
     /**
      * 通用接口 删除订阅 30704
-     * @param subId subId
+     * @param subId 多个订阅地址则需传入订阅 id，一个的情况直接根据开发者 key 删除（可
      * @return { }
      * */
     public Map<String, Object> deleteSubscribe(String subId) {
@@ -315,6 +213,75 @@ public class ServiceRequests {
         return baseRequest(param);
     }
 
+    /**
+     * 布控添加 45307
+     * @param taskIds 任务 ID(多个任务 id 用“,”隔开)
+     * @param threshold 报警分数线(大于 0 小于 100的整数)
+     * @param repositoryIds 库 ID(多个人像库 ID 用“,”隔开)
+     * @return { "id": "xxx" }
+     */
+    public Map<String, Object> createControl(String taskIds, int threshold, String repositoryIds) {
+        Map<String, Object> param = new TreeMap<>();
+        param.put("code", "45307");
+        Map<String, Object> req = new TreeMap<>();
+        req.put("taskIds", taskIds);
+        req.put("threshold", threshold);
+        req.put("repositoryIds", repositoryIds);
+        param.put("req", req);
+        return baseRequest(param);
+    }
+
+    /**
+     * 布控查询 45308
+     * @param id 布控 ID(非必填，默认获取所有布控)
+     * @param pageSize 每页条数（非必填）
+     * @param pageNum 页码（非必填）
+     * @return { ... }
+     */
+    public Map<String, Object> queryControl(String id, int pageSize, int pageNum) {
+        Map<String, Object> param = new TreeMap<>();
+        param.put("code", "45308");
+        Map<String, Object> req = new TreeMap<>();
+        req.put("id", id);
+        req.put("pageSize", pageSize);
+        req.put("pageNum", pageNum);
+        param.put("req", req);
+        return baseRequest(param);
+    }
+
+    /**
+     * 布控修改 45309
+     * @param id 布控 ID
+     * @param taskIds 任务 ID(多个任务 id 用“,”隔开)
+     * @param threshold 报警分数线(大于 0 小于 100的整数)
+     * @param repositoryIds 库 ID(多个人像库 ID 用“,”隔开)
+     * @return { }
+     */
+    public Map<String, Object> updateControl(String id, String taskIds, int threshold, String repositoryIds) {
+        Map<String, Object> param = new TreeMap<>();
+        param.put("code", "45309");
+        Map<String, Object> req = new TreeMap<>();
+        req.put("id", id);
+        req.put("taskIds", taskIds);
+        req.put("threshold", threshold);
+        req.put("repositoryIds", repositoryIds);
+        param.put("req", req);
+        return baseRequest(param);
+    }
+
+    /**
+     * 布控删除 45310
+     * @param id 布控 ID
+     * @return { }
+     */
+    public Map<String, Object> deleteControl(String id) {
+        Map<String, Object> param = new TreeMap<>();
+        param.put("code", "45310");
+        Map<String, Object> req = new TreeMap<>();
+        req.put("id", id);
+        param.put("req", req);
+        return baseRequest(param);
+    }
 
     private Map<String, Object> baseRequest(Map<String, Object> param) {
         HttpPost post = new HttpPost(config.getApiurl());
@@ -369,7 +336,11 @@ public class ServiceRequests {
         p.put(PARAM_KEY_APPKEY, config.getAppkey());
         p.put(PARAM_KEY_PARAMDATA, param);
         try {
-            return new StringEntity(JSON.toJSONString(p));
+            final String pStr = JSON.toJSONString(p);
+            if (log.isDebugEnabled()) {
+                log.debug("request param is {}", pStr);
+            }
+            return new StringEntity(pStr);
         } catch (UnsupportedEncodingException e) {
             log.warn(e.getLocalizedMessage());
             throw new RuntimeException(e);
