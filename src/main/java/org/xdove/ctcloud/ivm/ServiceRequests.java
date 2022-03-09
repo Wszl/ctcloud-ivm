@@ -97,7 +97,7 @@ public class ServiceRequests {
     }
 
     /**
-     * 创建明厨亮灶任务 47212
+     * 修改明厨亮灶任务 47212
      * @param deviceNum 设备编码（非必填，与 url 二选一）
      * @param url 视频流地址或视频文件地址（非必填，与 deviceNum 二选一）
      * @param name 任务名称（非必填）
@@ -279,6 +279,24 @@ public class ServiceRequests {
         param.put("code", "45310");
         Map<String, Object> req = new TreeMap<>();
         req.put("id", id);
+        param.put("req", req);
+        return baseRequest(param);
+    }
+
+    /**
+     * 查询场景图 47216
+     * @param enterpriseUser 手机号（选填，数字生活接入平台鉴权）
+     * @param taskId 抽帧任务id，与设备号二选一
+     * @param deviceNum 设备编码（第三方平台），与任务id二选一
+     * @return { "sceneBase64":"base64" }
+     */
+    public Map<String, Object> queryScene(String enterpriseUser, String taskId, String deviceNum) {
+        Map<String, Object> param = new TreeMap<>();
+        param.put("code", "47216");
+        Map<String, Object> req = new TreeMap<>();
+        req.put("enterpriseUser", enterpriseUser);
+        req.put("taskId", taskId);
+        req.put("deviceNum", deviceNum);
         param.put("req", req);
         return baseRequest(param);
     }

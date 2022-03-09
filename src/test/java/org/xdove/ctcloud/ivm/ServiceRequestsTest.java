@@ -109,4 +109,11 @@ public class ServiceRequestsTest {
         final Map<String, Object> result = requests.deleteControl(controlId);
         System.out.println(result);
     }
+
+    @Test
+    public void testQueryScene() {
+        String taskId = System.getenv("taskId");
+        final Map<String, Object> result = requests.queryScene(null, taskId, null);
+        System.out.println(result);
+    }
 }
