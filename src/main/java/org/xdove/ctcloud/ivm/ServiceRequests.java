@@ -1,6 +1,7 @@
 package org.xdove.ctcloud.ivm;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import org.apache.commons.codec.binary.Hex;
 import org.apache.commons.io.IOUtils;
@@ -89,7 +90,7 @@ public class ServiceRequests {
         req.put("deviceNum", deviceNum);
         req.put("url", url);
         req.put("type", type);
-        req.put("analysisRule", analysisRule);
+        req.put("analysisRule", JSONArray.toJSONString(analysisRule));
         req.put("sceneBase64", sceneBase64);
         req.put("name", name);
         param.put("req", req);
@@ -113,7 +114,7 @@ public class ServiceRequests {
         Map<String, Object> req = new TreeMap<>();
         req.put("deviceNum", deviceNum);
         req.put("url", url);
-        req.put("analysisRule", analysisRule);
+        req.put("analysisRule", JSONArray.toJSONString(analysisRule));
         req.put("sceneBase64", sceneBase64);
         req.put("name", name);
         req.put("taskId", taskId);
