@@ -21,10 +21,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.TreeMap;
+import java.util.*;
 
 /**
  * 视觉智联SDK
@@ -82,7 +79,7 @@ public class ServiceRequests {
      * @param name 任务名称（非必填）
      * @return result {"taskId":"60d04273e4b0e5b78bd1b502" }
      */
-    public Map<String, Object> createTask(String deviceNum, String url, int type, CreateTaskAnalysisRule analysisRule,
+    public Map<String, Object> createTask(String deviceNum, String url, int type, List<CreateTaskAnalysisRule> analysisRule,
                                           String sceneBase64, String name) {
         Map<String, Object> param = new TreeMap<>();
         param.put("code", "47211");
@@ -90,7 +87,9 @@ public class ServiceRequests {
         req.put("deviceNum", deviceNum);
         req.put("url", url);
         req.put("type", type);
-        req.put("analysisRule", JSONArray.toJSONString(analysisRule));
+        if (Objects.nonNull(analysisRule)) {
+            req.put("analysisRule", JSONArray.toJSONString(analysisRule));
+        }
         req.put("sceneBase64", sceneBase64);
         req.put("name", name);
         param.put("req", req);
@@ -107,14 +106,16 @@ public class ServiceRequests {
      * @param taskId 检测任务 id（必填）
      * @return result { }
      */
-    public Map<String, Object> updateTask(String deviceNum, String url, String name, CreateTaskAnalysisRule analysisRule,
+    public Map<String, Object> updateTask(String deviceNum, String url, String name, List<UpdateTaskAnalysisRule> analysisRule,
                                                String sceneBase64, String taskId) {
         Map<String, Object> param = new TreeMap<>();
         param.put("code", "47212");
         Map<String, Object> req = new TreeMap<>();
         req.put("deviceNum", deviceNum);
         req.put("url", url);
-        req.put("analysisRule", JSONArray.toJSONString(analysisRule));
+        if (Objects.nonNull(analysisRule)) {
+            req.put("analysisRule", JSONArray.toJSONString(analysisRule));
+        }
         req.put("sceneBase64", sceneBase64);
         req.put("name", name);
         req.put("taskId", taskId);

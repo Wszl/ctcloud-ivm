@@ -2,7 +2,10 @@ package org.xdove.ctcloud.ivm;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.xdove.ctcloud.ivm.entity.CreateTaskAnalysisRule;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Map;
 
 /**
@@ -27,7 +30,9 @@ public class ServiceRequestsTest {
     @Test
     public void testCreateTask() {
         String deviceNum = System.getenv("deviceNum");
-        final Map<String, Object> result = requests.createTask(deviceNum, null, 0, null, null, null);
+        CreateTaskAnalysisRule rule = new CreateTaskAnalysisRule();
+        rule.setTypes(Collections.singletonList("nomask"));
+        final Map<String, Object> result = requests.createTask(deviceNum, null, 0, Collections.singletonList(rule), null, null);
         System.out.println(result);
     }
 
